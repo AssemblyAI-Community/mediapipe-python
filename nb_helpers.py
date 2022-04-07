@@ -87,15 +87,15 @@ def rotate_and_save(figure, axis, filename, save=False):
 def time_animate(data, figure, ax, rotate_data=True, rotate_animation=False):
     frame_data = data[:, :, 0]
     if rotate_data:
-        plot = [ax.scatter(frame_data[0, :], frame_data[2, :], -frame_data[1, :], color='tab:blue')]
+        plot = [ax.scatter(frame_data[0, :], -frame_data[2, :], -frame_data[1, :], color='tab:blue')]
 
         for i in pose_connections:
             plot.append(ax.plot3D([frame_data[0, i[0]], frame_data[0, i[1]]],
-                                  [frame_data[2, i[0]], frame_data[2, i[1]]],
+                                  [-frame_data[2, i[0]], -frame_data[2, i[1]]],
                                   [-frame_data[1, i[0]], -frame_data[1, i[1]]],
                                   color='k', lw=1)[0])
 
-        ax.view_init(elev=10, azim=-60)
+        ax.view_init(elev=10, azim=120)
 
     else:
         ax.scatter(frame_data[0, :], frame_data[1, :], frame_data[2, :], color='tab:blue')
@@ -119,18 +119,18 @@ def time_animate(data, figure, ax, rotate_data=True, rotate_animation=False):
         for idxx in range(len(plot)):
             plot[idxx].remove()
 
-        plot[0] = ax.scatter(frame_data[0, :], frame_data[2, :], -frame_data[1, :], color='tab:blue')
+        plot[0] = ax.scatter(frame_data[0, :], -frame_data[2, :], -frame_data[1, :], color='tab:blue')
 
         idx = 1
         for pse in pose_connections:
             plot[idx] = ax.plot3D([frame_data[0, pse[0]], frame_data[0, pse[1]]],
-                                  [frame_data[2, pse[0]], frame_data[2, pse[1]]],
+                                  [-frame_data[2, pse[0]], -frame_data[2, pse[1]]],
                                   [-frame_data[1, pse[0]], -frame_data[1, pse[1]]],
                                   color='k', lw=1)[0]
             idx += 1
 
         if rotate_animation:
-            ax.view_init(elev=10., azim=-60 + (360 / data.shape[-1]) * i)
+            ax.view_init(elev=10., azim=120 + (360 / data.shape[-1]) * i)
 
         return figure,
 
